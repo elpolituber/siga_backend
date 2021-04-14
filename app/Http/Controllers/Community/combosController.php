@@ -11,48 +11,73 @@ use App\Models\App\Catalogue;
 
 
 class combosController extends Controller
-{
+{//objeto se fue
   public function show(){
-   // $academiPreriod=AcademiPeriod::all("nombre","id");//esta tabla por el momento va hacer creada por el app
-    $career=Career::join('catalogues','careers.modality_id','=','catalogues.id')
-    ->get(["careers.name","careers.id","catalogues.name as modality"]);
-    $mode=Catalogue::where('type','career_modality')->get(["name","id"]);
-    $meansOfVerification=Catalogue::where('type','means_verification')->get(["name","id"]);
-    $fraquencyOfActivity=Catalogue::where('type','fraquency_activity')->get(["name","id"]);
-    $assignedLine=Catalogue::where('type','assigned_line')->get(["name","id"]);
-    $linkageAxes=Catalogue::where('type','linkage_axes')->get(["name",'id']);//ejes de vinculacion
-    $bondingActivities=Catalogue::where('type','bonding_activities')->get(["name","id"]);//Actividad de vinculación
-    $researchAreas=Catalogue::where('type','research_areas')->get(["name","id"]);//rea de investigacion
-    $aims=Catalogue::where('type','aims')->get(["name","id"]);
-    $funtionTeacher=Catalogue::where('type','funtion_vinculacion')->get(["name","id"]);
-    $status=Catalogue::where('type','status_vinculacion')->get(["name","id"]);
+    $fraquencyOfActivity=Catalogue::where('type','fraquency_activity_vinculacion')->get(["name","id","type","code"]);
+    $assignedLine=Catalogue::where('type','assigned_line_vinculacion')->get(["name","id","type","code"]);
+    $linkageAxes=Catalogue::where('type','linkage_axes_vinculacion')->get(["name",'id',"type","code"]);//ejes de vinculacion
+    $bondingActivities=Catalogue::where('type','bonding_activities_vinculacion')->get(["name","id","type","code"]);//Actividad de vinculación
+    $researchAreas=Catalogue::where('type','research_areas_vinculacion')->get(["name","id","type","code"]);//rea de investigacion
+    $aims=Catalogue::where('type','aims_types_vinculacion')->get(["name","id","type","code"]);
+    $funtionTeacher=Catalogue::where('type','funtion_vinculacion')->get(["name","id","type","code"]);
+    $status=Catalogue::where('type','status_vinculacion')->get(["name","id","type","code"]);
+    $cargo=Catalogue::where('type','cargo_vincualcion')->get(["name","id","type","code"]);
+    $career=Career::with('modality')->with('institution')->get();
     $combos=array(
-        //"academiPreriod"=>$academiPreriod,
-        "career"=>$career,
-        "mode"=>$mode,
-        "meansOfVerification"=>$meansOfVerification,
         "assignedLine"=>$assignedLine,
         "linkageAxes"=>$linkageAxes,
         "bondingActivities"=>$bondingActivities,
         "fraquencyOfActivity"=>$fraquencyOfActivity,
         "research_areas"=>$researchAreas,
-        "aims"=>$aims,
+        "objective"=>$aims,
         "teacher_funtion"=>$funtionTeacher,
         "status"=>$status,
-        //"Catalogue"=>$catalogue,
-
+        "cargo"=>$cargo,
+        "career"=>$career,
       );
     return $combos;
  }
  public function create(Request $request){
-    $value=Catalogue::where('type',$request->type.'_vinculacion')->count();
+    $value=$this->indice($request->type);
     $catalogue= new Catalogue;
-    $catalogue->code =$value+1;
+    $catalogue->code =$value;
     $catalogue->name = $request->name;
-    $catalogue->type = $request->type->values."_vinculacion";//revisar
+    $catalogue->type = $request->type;//revisar
     $catalogue->state_id=1 ;
     $catalogue->save();
-    return Catalogue::where('type',$request->type.'_vinculacion')->get();
+    return "se han completado su peticion";
  }
-
+ 
+public function indice($type){
+  $value=Catalogue::where('type',$type)->count();
+  $num=$value+1;
+  if($type == 'status_vinculacion'){
+    return "status_".$num;
+  }
+  if($type =='fraquency_activity_vinculacion'){
+    return 'fraquency_activity_'.$num;
+  }
+  if($type =='assigned_line_vinculacion'){
+    return 'assigned_line_'.$num;
+  }
+  if($type =='linkage_axes_vinculacion'){
+    return 'linkage_axes_'.$num;
+  }
+  if($type =='aims_types_vinculacion'){
+    return 'aims_types_'.$num;
+  }
+  if($type =='bonding_activities_vinculacion'){
+    return 'bonding_activities_'.$num;
+  }
+  if($type =='research_areas_vinculacion'){
+    return 'research_areas_'.+($num);
+  }
+  if($type =='cargo_vincualcion'){
+    return 'research_areas_'.+($num);
+  }
+  if($type =='funtion_vinculacion'){
+    return 'funtion_'.+($num);
+  }
+}
+ 
 }

@@ -3,19 +3,31 @@
 namespace App\Http\Controllers\Community;
 
 use App\Models\Cecy\Modelo1;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Community\Authorities;
+use Illuminate\Http\Request;
 
-class Modelo1Controller extends Controller
+class authorityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function create(Request $request)
     {
-        //
+        $authority = new Authorities;
+        $authority->user_id=$request->user_id;
+        $authority->type_id=$request->type_id;
+        $authority->status_id=$request->status_id;
+        $authority->career_id=$request->career_id;
+        $authority->code=$request->code;
+        $authority->name=$request->name;
+        $authority->start_date=$request->start_date;
+        $authority->end_date=$request->end_date;
+        $authority->state_id=1;
+        $authority->save();
+        return Authorities::where("status_id","En funcion")->get();
     }
 
     /**

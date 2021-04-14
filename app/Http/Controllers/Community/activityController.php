@@ -5,15 +5,16 @@ namespace App\Http\Controllers\Community;
 use App\Models\Cecy\Modelo1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Community\Activities;
 
-class Modelo1Controller extends Controller
+class activityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function create(Request $request)
     {
         //
     }
@@ -62,4 +63,20 @@ class Modelo1Controller extends Controller
     {
         //
     }
+    public function projectActivitiesCreate($id_project,array $activities){
+        $ProjectActivities= new Activities;
+        $ProjectActivities->state=true;
+        $ProjectActivities->project_id=$id_project;
+        $ProjectActivities->type_id=$activities["type"]["id"];
+        $ProjectActivities->description=$activities["description"];
+        $ProjectActivities->save();
+    }
+    public function projectActivitiesUpdate($id_project,array $activities){
+        $ProjectActivities=Activities::find( $activities["id"]);
+        $ProjectActivities->state=true;
+        $ProjectActivities->project_id=$id_project;
+        $ProjectActivities->type_id=$activities["type"]["id"];
+        $ProjectActivities->description=$activities["description"];
+        $ProjectActivities->save();
+        }
 }

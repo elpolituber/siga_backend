@@ -17,7 +17,6 @@ use App\Models\App\Institution;
 use App\Models\Authentication\User;
 use Illuminate\Database\Seeder;
 
-
 class DatabaseSeeder extends Seeder
 {
     public function run()
@@ -70,6 +69,12 @@ class DatabaseSeeder extends Seeder
 
         // Security Questions
         $this->createSecurityQuestions();
+
+        //community
+        $this->call([
+            CombosSeeder::class,
+            ProjectSeeder::class,
+       ]);
     }
 
     private function createSystem()
@@ -727,8 +732,9 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create(
             [
-                'username' => '1234567890',
-                'email' => 'cesar.tamayo0204@gmail.com'
+                'username' => '1',
+                'email' => 'frn.zabala@yavirac.edu.ec'
+                //passaword 1-9
             ]);
     }
 
@@ -783,4 +789,10 @@ class DatabaseSeeder extends Seeder
             create schema teacher_eval;
             create schema community;
             create schema cecy;
+            php artisan passport:install
+            $this->call([
+                CombosSeeder::class,
+                ProjectSeeder::class,
+            ]);
  */
+//php artisan storage:link
