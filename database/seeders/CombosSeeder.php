@@ -395,7 +395,12 @@ class CombosSeeder extends Seeder
                 'type' => 'research_areas_vinculacion',
                 
             ]);
-            
+            Catalogue::factory()->create([
+                'code' => 'research_areas_17',
+                'name'=>'Otros',
+                'type' => 'research_areas_vinculacion',
+                
+            ]);
             // career modality
             Catalogue::factory()->create([
                 'code' => '1',
@@ -465,6 +470,16 @@ class CombosSeeder extends Seeder
                 'type' => 'cargo_vincualcion',
                 
             ]);
+            Catalogue::factory()->create([
+                'code' => 'cargo_8',
+                'name' => 'Representante legal',
+                'type' => 'cargo_vincualcion',
+            ]);
+            Catalogue::factory()->create([
+                'code' => 'cargo_9',
+                'name' => 'Represntante de los estudiantes',
+                'type' => 'cargo_vincualcion',
+            ]);    
 
     
     /*

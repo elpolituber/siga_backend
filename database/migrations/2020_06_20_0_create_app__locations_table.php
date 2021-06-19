@@ -16,7 +16,7 @@ class CreateAppLocationsTable extends Migration
             $table->string('name');
             $table->string('short_name')->nullable();
             $table->boolean('state')->default(true);
-            $table->unique(['code','name']);
+            // $table->unique(['code','name']);
             $table->timestamps();
         });
     }

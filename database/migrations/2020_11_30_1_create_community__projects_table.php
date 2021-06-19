@@ -31,15 +31,17 @@ class CreateCommunityProjectsTable extends Migration
             $table->date('start_date')->nullable();// tiempo
             $table->date('end_date')->nullable();//tienmpo
             $table->text('description',1000)->nullable();//DESCRIPCION GENERAL  DEL PROYECTO.
-            $table->json('indirect_beneficiaries')->nullable();
-            $table->json('direct_beneficiaries')->nullable();
+            $table->text('indirect_beneficiaries')->nullable();
+            $table->text('direct_beneficiaries')->nullable();
             $table->text('introduction')->nullable();
             $table->text('situational_analysis',300)->nullable();//ANALISIS SITUACIONAL (DIAGNOSTICO)
             $table->text('foundamentation')->nullable();
             $table->text('justification')->nullable();
             $table->foreignId('create_by_id')->nullable()->connstrained('app.users');
-            $table->json('observations')->nullable();
-            $table->json('bibliografia')->nullable();//pendiente
+            $table->text('observations')->nullable();
+            $table->text('bibliografia')->nullable();//pendiente
+            $table->string('document')->nullable()->unique();
+            $table->string('schedules')->nullable()->unique();//cronograma
             $table->timestamps();
         });
     }

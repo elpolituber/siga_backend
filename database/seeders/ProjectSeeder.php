@@ -14,7 +14,28 @@ class ProjectSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {   
+        $pro=Catalogue::where('name','PROVINCIA')->first('id')->id;
+        $can=Catalogue::where('name','CANTON')->first('id')->id;
+        $ciu=Catalogue::where('name','PARISH')->first('id')->id;
+        Db::connection('pgsql-app')->table('locations')->insert([
+            'type_id'=>$pro,
+            'code'=>'pro',
+            'name'=>'pichincha'
+         ]);   
+
+        Db::connection('pgsql-app')->table('locations')->insert([
+            'type_id'=>$can,
+            'parent_id'=>1,
+            'code'=>'can',
+            'name'=>'quito'
+         ]);
+        Db::connection('pgsql-app')->table('locations')->insert([
+            'type_id'=>$ciu,
+            'parent_id'=>2,
+            'code'=>'ciu',
+            'name'=>'quito'
+         ]);
 
         DB::connection('pgsql-community')->table('beneficiary_institutions')->insert([    
            
@@ -38,11 +59,11 @@ class ProjectSeeder extends Seeder
             'status_id'=>1,//catalogo propio una fk 
            
             'field'=>"campo",//campo de area de vinculacion
-            'direct_beneficiaries'=> json_encode(['VISTA PARA TODOS']),
-            'indirect_beneficiaries'=> json_encode([ 'bio']),
+            'direct_beneficiaries'=> 'VISTA PARA TODOS',
+            'indirect_beneficiaries'=> 'bio',
             //'aim'=>'objeto',//objeto
             'frequency_activities_id'=>4,//frecuencia de actividades
-            //'cycle'=>"121",//ciclo
+            'cycle'=>"121",//ciclo
             //'location_id'=>1,
             'lead_time'=>3,//plazo de ejecucion
             /* 'delivery_date'=>01/05/2020,// tiempo
@@ -58,7 +79,7 @@ class ProjectSeeder extends Seeder
             'foundamentation'=>'SADADASD',
             'justification'=>"ADSSDFDSF",
             'create_by_id'=>1,
-            'bibliografia'=>json_encode(["SE PONE LA BIBLIOGRAFIA"])
+            'bibliografia'=>"SE PONE LA BIBLIOGRAFIA"
             ]);
            /*  //Objetivo general
             $ob=Catalogue::where('code','aims_types_1')->first();
@@ -197,26 +218,25 @@ class ProjectSeeder extends Seeder
                 'type_id'=>Catalogue::where('code','assigned_line_1')->first('id')->id,//un catalogo unico de la tabla
                 'description'=>"esto es una prueba"    
             ]);
-            DB::connection('pgsql-community')->table('stake_holders')->insert([
+*/            DB::connection('pgsql-community')->table('stake_holders')->insert([
                 'name'=>'pepito de los palotes',
                 'identification'=>'1212321323',
                 'position'=>'conserje',
-               
-                'type_id'=>Catalogue::where('code','cargo_5')->first('id')->id,//
+                'type_id'=>Catalogue::where('code','CARGO_5')->first('id')->id,//
                 //'function'=>1,
                 'project_id'=>1
             ]);
+
             DB::connection('pgsql-community')->table('participants')->insert([
                
                 'user_id'=>1,
                 'project_id'=>1,
-                'type_id'=>1,
+                'type_id'=>Catalogue::where('code','CARGO_7')->first('id')->id,//para si es profesor estudiante
                 'position'=>'noce para esto',
-                'project_id'=>1,
                 'working_hours'=>1000,//horas de trabajo
-                'function_id'=>Catalogue::where('code','cargo_7')->first('id')->id//rol asignado catalogo
+                'function_id'=>Catalogue::where('code','FUNTION_2')->first('id')->id//rol asignado catalogo las funcipon dentro
             ]); 
- */
+ 
     /* 
     {
     	"user_id":1,

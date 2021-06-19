@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\App\Catalogue;
 use App\Models\App\school_period;
 use App\Models\Community\StakeHolder;
+use App\Models\Authentication\User;
 use App\Models\App\Career;
 use App\Models\Community\BeneficiaryInstitution;
+use App\Models\App\Location; 
 use App\Traits\StatusActiveTrait;
 
 use OwenIt\Auditing\Contracts\Auditable;
@@ -21,11 +23,6 @@ class Project extends Model implements Auditable
     
     //utilizacion para el tipo json 
     protected $casts=[
-        'observations'=>'array',
-        'cycle'=>'array',
-        'bibliografia'=>'array',
-        'indirect_beneficiaries'=>'array',
-        'direct_beneficiaries'=>'array',
         
     ];
     //
@@ -45,7 +42,7 @@ class Project extends Model implements Auditable
     }
     //revisar
     public function location(){
-        return $this->belongsTo(Catalogue::class,'location_id');
+        return $this->belongsTo(Location::class,'location_id');
     }
     public function frequency_activities(){
         return $this->belongsTo(Catalogue::class,'frequency_activities_id');
@@ -61,7 +58,9 @@ class Project extends Model implements Auditable
         return $this->hasMany(Activities::class);
     }
     public function objetive(){
-        return $this->hasMany(Objetive::class,'parent_id');
+        return $this->hasMany(Objetive::class);
     }
-  
+    public function create_by(){
+        return $this->belongsTo(User::class,'create_by_id');
+    }
 }

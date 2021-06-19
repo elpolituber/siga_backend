@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Community;
 use App\Models\Cecy\Modelo1;
 use App\Http\Controllers\Controller;
 use App\models\Community\StakeHolder;
+use App\Http\Controllers\Community\projectsController as project;
 use Illuminate\Http\Request;
 
 class stakeHolderController extends Controller
@@ -57,30 +58,34 @@ class stakeHolderController extends Controller
     /**
      * 
      */
-    public function destroy(Modelo1 $modelo1)
-    {
-        //
+    public function destroy($id){
+        StakeHolder::where('id',$id)->delete();
     }
-    public function stakeHolderCreate($id_project,array $stakeHolders){
-        $stakeHolder=new StakeHolder;
+    public function stakeHolderCreate($id_project,$name,$lastname,$identification,$position,$type){
+        // //return $stakeHolders['identification'];
+        // if(!!StakeHolder::where('identification',$identification)->where('project_id', $id_project)->first()){
+            $stakeHolder=new StakeHolder;
+            $stakeHolder->state=true;
+            $stakeHolder->project_id=$id_project;
+            $stakeHolder->name=$name;
+            $stakeHolder->lastname=$lastname;
+            $stakeHolder->identification=$identification;
+            $stakeHolder->position=$position;
+            $stakeHolder->type_id=$type;
+            $stakeHolder->save();
+            return"se guardo";
+        // }
+        // return"existe";
+    }
+    public function stakeHolderUpdate($id_project,$name,$lastname,$identification,$position,$type,$id){
+        $stakeHolder=StakeHolder::find($id);
         $stakeHolder->state=true;
         $stakeHolder->project_id=$id_project;
-        $stakeHolder->name=$stakeHolders["name"];
-        $stakeHolder->lastname=$stakeHolders["lastname"];
-        $stakeHolder->identification=$stakeHolders["identification"];
-        $stakeHolder->position=$stakeHolders["position"];
-        $stakeHolder->type_id=$stakeHolders["type"]["id"];
-        $stakeHolder->save();
-    }
-    public function stakeHolderUpdate($id_project,array $stakeHolders){
-        $stakeHolder=StakeHolder::find($stakeHolders["id"]);
-        $stakeHolder->state=true;
-        $stakeHolder->project_id=$id_project;
-        $stakeHolder->name=$stakeHolders["name"];
-        $stakeHolder->lastname=$stakeHolders["lastname"];
-        $stakeHolder->identification=$stakeHolders["identification"];
-        $stakeHolder->position=$stakeHolders["position"];
-        $stakeHolder->type_id=$stakeHolders["type"]["id"];
+        $stakeHolder->name=$name;
+        $stakeHolder->lastname=$lastname;
+        $stakeHolder->identification=$identification;
+        $stakeHolder->position=$position;
+        $stakeHolder->type_id=$type;
      //   $stakeHolder->function=$stakeHolders["function"]["id"];
         $stakeHolder->save();
     }

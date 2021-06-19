@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="{{asset('pdf/css/convenio.css')}}">
 <meta charset="UTF-8">
 <title>Convenio de vincualcion pdf</title>
-<style>
-    .pagenum:before {
-        content: counter(page);
-    }
-    
-</style>
+
 {{--  logo 
     //dominio =http://siga.yavirac.edu.ec/public
     /storage/{{project->career->institution->logo}}
@@ -26,23 +20,126 @@
     }
 --}}
 <body>
+    <style>
+        .pagenum:before {
+            content: counter(page);
+        }
+        @page {
+            margin: 0cm 0cm;
+            font-family: 'Times New Roman';
+            text-align: justify;
+        }
+        
+        body {
+            margin: 2.3cm 2cm 2.7cm;
+            background-color: #fcfdfcec;
+        }
+        header {
+            position: fixed;
+            top: 0cm;
+            left: 0cm;
+            right: 0cm;
+            height: 2.5cm;
+            background-color: #f7f1f1ec;
+            color: white;
+            /* text-align: center; */
+            
+        }
+        main{
+            margin-bottom: 1cm;
+            background-color: #f6f7f1ec;
+            line-height : 20px;
+        }
+        .trheader,.tdheader{
+            padding: 20px;
+            text-align:center;
+        }
+        
+        
+        .cabezaIzquierda{
+            position: relative;
+            top: 0.2cm;
+            left: 1.7cm;
+            right: 0px;
+            bottom: 0px;
+            background-color:rgb(253, 253, 253);
+        }
+        .cabezaDerecha{
+            position: relative;
+            top: 0.2cm;
+            left: 17cm;
+            right: 0px;
+            bottom: 0px;
+            background-color:rgb(248, 248, 251);
+        }
+        footer {
+         position: fixed;
+            bottom: 0cm;
+            left: 0cm;
+            right: 0cm;
+            height: 2.1cm;
+            background-color:rgb(246, 244, 244);
+            color: rgba(255, 255, 255, 0.911);
+            
+            text-align: center;
+         
+        }
+        .pieIzquierda{
+            position: relative;
+            text-align: right;
+            padding: 30px;
+             
+        }
+        
+        /* fomato de letras */
+        .kursiva{
+            font-style: italic;
+        }
+        th,td{
+            padding: 50px;
+        }
+        th{
+            text-align: left,justify;
+        }
+        .logo{
+            width:90px;
+            height:90px;
+            margin: auto;
+            display: block;
+            opacity: 0.5;
+           }
+    </style>
     <header class="header">       
-        <div class="cabezaIzquierda">
-            <img src="http://asistencia.yavirac.edu.ec/public/storage/senescyt/line.png" alt="linea" class="linea"/>
+        <!-- /institutions/1.png -->
+        <div class="cabezaIzquierda ">
+            <img class="logo" 
+            src="{{asset('storage').'/'.$data->career->institution->logo}}" 
+            alt="izquierda" class="linea"/>
+        </div>
+        <div class="cabezaDerecha">
+            <img class="logo"
+             src="{{asset('/').$data->beneficiaryInstitution->logo}}" alt="derecha" class="linea"/>
         </div>
     </header>
 
-    <h3 style="text-align: center">VC- {{$data->code}}<br>
-        CONVENIO DE VINCULACIÓN CON LA SOCIEDAD ENTRE INSTITUTO TECNOLÓGICO SUPERIORE 
+    <h3 style="text-align: center">{{$data->code}}<br>
+        CONVENIO DE VINCULACIÓN CON LA SOCIEDAD  
         {{$data->career->institution->name}} Y {{$data->beneficiaryInstitution->name}}              
     </h3>
     <main>
         <article class="parrafo1">
 
-            <p>Comparecen a la celebración del presente Convenio, por una parte el INSTITUTO TECNOLÓGICO SUPERIOR {{$data->career->institution->name}}, legalmente representado por el @foreach ($data->participant as $item)
-                @if($item->type->id == 2)
-                {{$data->participant->user->first_name}}{{$data->participant->user->second_name}}{{$data->participant->user->first_lastname}}{{$data->participant->user->second_lastname}} @else a  @endif @endforeach
-                , en su calidad de Rector, de conformidad con lo establecido en la Resolución No. XXXXX y Acción de Personal No. Xxx de xx de xxx de xxx; delegado del Secretario de Educación Superior, Ciencia, Tecnología e Innovación, para suscribir el presente instrumento conforme al Acuerdo No. 2020-048 de 15 de mayo de 2020, , a quien en adelante para los efectos del presente instrumento se denominará “INSTITUTO”; y, por otra parte la empresa {{$data->beneficiaryInstitution->name}} con RUC No. {{$data->beneficiaryInstitution->ruc}}, representada legalmente por XXXXXXXXX en calidad de Gerente General a quien en adelante y para los efectos del presente instrumento se denominará “ENTIDAD RECEPTORA”.
+            <p>Comparecen a la celebración del presente Convenio, por una parte el INSTITUTO TECNOLÓGICO SUPERIOR {{$data->career->institution->name}}, legalmente representado por el @foreach ($data->autorities as $item)
+                @if($item->type->code == "CARGO_1")
+                {{$data->autorities->user->first_name}}{{$data->autorities->user->second_name}}{{$data->autorities->user->first_lastname}}{{$data->autorities->user->second_lastname}} @else a  @endif @endforeach
+                , en su calidad de Rector, de conformidad con lo establecido en la Resolución No. XXXXX y Acción de Personal No. Xxx de xx de xxx de xxx; delegado del Secretario de Educación Superior, Ciencia, Tecnología e Innovación, para suscribir el presente instrumento conforme al Acuerdo No. 2020-048 de 15 de mayo de 2020, , a quien en adelante para los efectos del presente instrumento se denominará “INSTITUTO”; y, por otra parte la empresa {{$data->beneficiaryInstitution->name}} con RUC No. {{$data->beneficiaryInstitution->ruc}}, representada legalmente por 
+                @foreach ($data->stake_holder as $stake_holder)
+                @if ($stake_holder->type->code=="CARGO_8" )
+                <div>
+                    {{$stake_holder->name}} {{$stake_holder->lastname}}
+                </div>
+                @endif 
+                @endforeach en calidad de Gerente General a quien en adelante y para los efectos del presente instrumento se denominará “ENTIDAD RECEPTORA”.
                 Las partes libre y voluntariamente, acuerdan celebrar el presente convenio al tenor de las siguientes cláusulas:
             </p>
         </article >
@@ -84,7 +181,7 @@
                     14. Mediante acción de personal No. XXXXXXXX, de fecha XX de XXXX, la Secretaría de Educación Superior, Ciencia, Tecnología e Innovación, otorgó el nombramiento al XXXXXXXXXXXXX, portador de la cédula de ciudadanía No. XXXXXXXXXXX en calidad de Rector del Instituto Tecnológico Superior XXXXXXXXXXXX posesionado en sus funciones mediante acto administrativo por el periodo comprendido entre el 20XX y el 20XX
                 </p>
                 <p>
-                    15.El {{$data->career->institution->name}}, ubicado en la ciudad de {{-- {{$data->location->name}}--}}, provincia de {{--{{$data->location->name}}--}}, es una Institución de Educación Superior Pública, con licencia de funcionamiento otorgada mediante Acuerdo Nro. Xxx y registro institucional Nro. Xxxxx conferido por el Consejo de Educación Superior CONESUP, que se dedica a la formación de profesionales de nivel tecnológico.;
+                    15.El {{$data->career->institution->name}}, ubicado en la ciudad de  {{$data->location->name}}, provincia de {{$data->location->parent->parent->name}}, es una Institución de Educación Superior Pública, con licencia de funcionamiento otorgada mediante Acuerdo Nro. Xxx y registro institucional Nro. Xxxxx conferido por el Consejo de Educación Superior CONESUP, que se dedica a la formación de profesionales de nivel tecnológico.;
                 </p>
                 <p>
                     16. Mediante Informe Técnico Académico de Viabilidad para la firma de Convenio No. Xxxxxx de fecha xx de xxxxxxxx de 202x, se concluye que: “Conclusiones y Recomendaciones:”.
@@ -93,9 +190,11 @@
                     17. Mediante memorando No. SENESCYT-xx-2020-xxxxx-M del fecha xx de xxxxxxxxx del 202x8, el xxxxxxxxxx, Coordinador/a Zonal (zonas 1,2,4,5,6,7,8)/  Subsecretario de Formación Técnica y Tecnológica (en el caso de zona 3 y 9), aprueba el Informe Técnico Nro. XXXXXXXXXXXXXX de xx de xxxxxxxxx  de 202x, para la suscripción del Convenio entre el {{$data->beneficiaryInstitution->name}} y el Instituto Tecnológico Superior {{$data->career->institution->name}}.
                 </p>
                 <p>
-                    18. Con los antecedentes expuestos, el Instituto Tecnológico Superior {{$data->career->institution->name}} y el  {{$data->beneficiaryInstitution->name}}, acuerdan suscribir el presente convenio referente a la implementación de un programa de vinculación con la colectividad que versará sobre el proyecto que tiene como objetivo:
-                    @foreach ($data->objetive as $objetive)    
-                    ”{{$objetive['description']}}”
+                    18. Con los antecedentes expuestos, el Instituto Tecnológico Superior {{$data->career->institution->name}} y el  {{$data->beneficiaryInstitution->name}}, acuerdan suscribir el presente convenio referente a la implementación de un programa de vinculación con la colectividad que versará sobre el proyecto que tiene como objetivo: <br>
+                    @foreach ($data->objetive as $objetive) 
+                    @if ($objetive->type->code=="AIMS_TYPES_1" || $objetive->type->code=="AIMS_TYPES_2")
+                        ”{{$objetive['description']}}”<br>    
+                    @endif   
                     @endforeach, por parte de las carreras  de {{$data->career->name}}.
                 </p>
             </article>
@@ -228,7 +327,7 @@
             <p>Todas las comunicaciones y notificaciones entre las partes, se realizarán por escrito y serán entregadas a las siguientes direcciones:</p>
             <h4>INSTITUTO TECNOLÓGICO SUPERIOR “{{$data->career->institution->name}}”</h4>
             <p>Dirección:                xxxxxx. <br>
-                {{--  Ciudad-Provincia:   {{$data->location->name}} <br>  --}}
+                Ciudad-Provincia:   {{$data->location->name}}-{{$data->location->parent->parent->name}} <br>  
                 Teléfono:                  XXXXXXXX <br>
                 Mail:                          XXXXXXXXXXXXXXXXXXXX</p>
             <h4>CLÁUSULA DÉCIMA SEGUNDA.- COMUNICACIONES Y NOTIFICACIONES:
@@ -236,7 +335,7 @@
             <p>Todas las comunicaciones y notificaciones entre las partes, se realizarán por escrito y serán entregadas a las siguientes direcciones:</p>
             <h4>{{$data->beneficiaryInstitution->name}}:</h4>
             <p>Dirección:{{$data->beneficiaryInstitution->address}}   . <br>
-                Ciudad-Provincia:{{$data->beneficiaryInstitution->address}}-{{$data->beneficiaryInstitution->address}}       <br>
+                Ciudad-Provincia:{{$data->beneficiaryInstitution->location->name}}-{{$data->beneficiaryInstitution->location->parent->parent->name}}       <br>
                 Teléfono:       XXXXXXXX <br>
                 Mail:         XXXXXXXXXXXXXXXXXXXX
             </p>
@@ -250,32 +349,39 @@
         </article>
         <table>
             <tr>
-                <th colspan="1">“Por delegación del Secretario de
+                <th colspan="4">“Por delegación del Secretario de
                     Educación Superior, Ciencia, Tecnología
                     en Innovación”:</th>
             
-                <th colspan="3">
+                <th colspan="4">
                     Por la Entidad Receptora:
                 </th>
             
             </tr>
             <tr>     
-                <td>
-                    Mgs. @foreach ($data->participant as $item)
-                            @if($item->type->id == 2)
-                             {{$data->participant->user->first_name}}{{$data->participant->user->second_name}}{{$data->participant->user->first_lastname}}{{$data->participant->user->second_lastname}} 
+                <td colspan="4">
+                    Mgs. @foreach ($data->autorities as $item)
+                            @if($item->type->code == "CARGO_1")
+                             {{$data->autorities->user->first_name}}{{$data->autorities->user->second_name}}{{$data->autorities->user->first_lastname}}{{$data->autorities->user->second_lastname}} 
                              @else  
                          @endif 
                          @endforeach. <br>
                     RECTOR <br>
-                    INSTITUTO TECNOLÓGICO <br>
-                    SUPERIOR XXXXXXXXXX <br>
+                    {{$data->career->institution->name}}
                 </td>
             
-                <td>
-                    Sr. XXXX <br>
+                <td colspan="4">
+                    Sr.
+                    @foreach ($data->stake_holder as $stake_holder)
+                    @if ($stake_holder->type->code=="CARGO_8" )
+                    <div>
+                        {{$stake_holder->name}} {{$stake_holder->lastname}}
+                    </div>
+                    @endif 
+                    @endforeach.
+                    <br>
                     RUC: {{$data->beneficiaryInstitution->ruc}}    <br>
-                    EMPRESA: {{$data->beneficiaryInstitution->name}}   <br>
+                    {{$data->beneficiaryInstitution->name}}   <br>
                 </td>
             
             </tr>

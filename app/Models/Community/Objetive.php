@@ -29,6 +29,9 @@ class Objetive extends Model implements Auditable
     { 
      return $this->belongsTo(Objetive::class,'parent_id')->where('parent_id',null)->with('parent'); 
     }
+    public function project(){
+        return $this->belongsTo(Project::class);
+    }
     
    
 }

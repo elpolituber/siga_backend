@@ -2,86 +2,57 @@
 
 namespace App\Http\Controllers\Community;
 
-use App\Models\Cecy\Modelo1;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Cecy\Modelo1;
 use App\Models\Community\Participant;
+use App\Models\App\Catalogue;
+
 class participantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function destroy($id)
     {
-        //
+        Participant::where('id',$id)->delete();
     }
+    public function studentCreate(Request $request){
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Cecy\Modelo1  $modelo1
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Modelo1 $modelo1)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cecy\Modelo1  $modelo1
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Cecy\Modelo1  $modelo1
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Modelo1 $modelo1)
-    {
-        //
-    }
-    public function participantCreate($id_project,array $participants){
+        $type=Catalogue::where('code','CARGO_6')->first();
         $participant= new Participant;
-        $participant->state=true;
-        $participant->user_id=$participants["user"]["id"];
-        $participant->project_id=$id_project;
-        $participant->type_id=$participants["type"]["id"];
-//        $participant->position=$participants["position"];
-        $participant->working_hours=$participants["working_hours"];
-        $participant->function_id=$participants["function"]["id"];
+        $participant->user_id=$request->user['id'];
+        $participant->project_id=$request->project_id;
+        $participant->type_id=$type['id'];//estudiante profesor
+        $participant->position=$request->position; 
+        $participant->working_hours=$request->working_hours;
         $participant->save();
+        return $participant;
     }
-    public function participantUpdate($id_project,array $participants){
-        $participant=Participant::find($participants["id"]);
-        $participant->state=true;
-        $participant->user_id=$participants["user"]["id"];
-        $participant->project_id=$id_project;
-        $participant->type_id=$participants["type"]["id"];
-       // $participant->position=$participants["position"];
-        $participant->working_hours=$participants["working_hours"];
-        $participant->function_id=$participants["function"]["id"];
+
+    public function teacherCreate(Request $request){
+        $type=Catalogue::where('code','CARGO_7')->first();
+        $participant= new Participant;
+        $participant->user_id=$request->user['id'];
+        $participant->project_id=$request->project_id;
+        $participant->type_id=$type['id'];//estudiante profesor
+        $participant->working_hours=$request->working_hours;    
+        $participant->function_id=$request->function['id'];
         $participant->save();
+        return $participant;
+    }
+    public function teacherUpdate(Request $request){
+        $participant= Participant::find($request->id_participant);
+        $participant->user_id=$request->user['id'];
+        $participant->working_hours=$request->working_hours;
+        $participant->function_id=$request->function['id'];
+        $participant->save();
+        return $participant;
+    }
+
+    public function studentUpdate(Request $request){
+        $participant= Participant::find($request->id_participant);
+        $participant->user_id=$request->user['id'];
+        $participant->position=$request->position; 
+        $participant->working_hours=$request->working_hours;
+        $participant->save();
+        return $participant;
     }
 }

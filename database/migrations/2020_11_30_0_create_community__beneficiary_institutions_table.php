@@ -21,10 +21,8 @@ class CreateCommunityBeneficiaryInstitutionsTable extends Migration
             $table->string('ruc',15)->nullable();
             $table->text('name',300)->nullable();
             $table->text('address')->nullable();
+            $table->text('parroquia')->nullable();
             $table->foreignId('location_id')->nullable()->constrained('app.locations');//fk propia
-            // $table->string('legal_representative_name',100);
-            // $table->string('legal_representative_lastname',100);
-            // $table->string('legal_representative_identification',100);
             $table->string('function')->nullable();
             $table->timestamps();
         });

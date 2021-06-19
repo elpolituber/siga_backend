@@ -59,24 +59,23 @@ class activityController extends Controller
      * @param  \App\Models\Cecy\Modelo1  $modelo1
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Modelo1 $modelo1)
+    public function destroy($id)
     {
-        //
+        Activities::where('project_id',$id)->delete();
     }
-    public function projectActivitiesCreate($id_project,array $activities){
+    public function projectActivitiesCreate($id_project,$activities){
         $ProjectActivities= new Activities;
         $ProjectActivities->state=true;
         $ProjectActivities->project_id=$id_project;
-        $ProjectActivities->type_id=$activities["type"]["id"];
-        $ProjectActivities->description=$activities["description"];
+        $ProjectActivities->type_id=$activities;
         $ProjectActivities->save();
     }
-    public function projectActivitiesUpdate($id_project,array $activities){
-        $ProjectActivities=Activities::find( $activities["id"]);
+    public function projectActivitiesUpdate($id_project,$activities){
+        //borra y genera nuevos 
+        $ProjectActivities= new Activities;
         $ProjectActivities->state=true;
         $ProjectActivities->project_id=$id_project;
-        $ProjectActivities->type_id=$activities["type"]["id"];
-        $ProjectActivities->description=$activities["description"];
+        $ProjectActivities->type_id=$activities;
         $ProjectActivities->save();
-        }
+    }
 }

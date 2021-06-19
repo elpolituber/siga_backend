@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Community;
 
 use App\Models\Cecy\Modelo1;
 use App\Http\Controllers\Controller;
-use App\Models\Community\Authorities;
+use App\Models\Community\Authority;
 use Illuminate\Http\Request;
 
 class authorityController extends Controller
@@ -15,30 +15,19 @@ class authorityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {
-        $authority = new Authorities;
-        $authority->user_id=$request->user_id;
-        $authority->type_id=$request->type_id;
-        $authority->status_id=$request->status_id;
-        $authority->career_id=$request->career_id;
-        $authority->code=$request->code;
-        $authority->name=$request->name;
-        $authority->start_date=$request->start_date;
-        $authority->end_date=$request->end_date;
-        $authority->state_id=1;
+    {   
+        // $res=$request->user['id'];
+        // return $res;
+        $authority = new Authority;
+        $authority->user_id=$request->user['id'];
+        $authority->type_id=$request->type['id'];
+        // $authority->status_id=$request->status_id;
+        // $authority->start_date=$request->start_date;
+        // $authority->end_date=$request->end_date;
+        $authority->state=true;
         $authority->save();
-        return Authorities::where("status_id","En funcion")->get();
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $res= Authority::with('user')->with('type')->where('state',true)->get() ;
+        return $res;
     }
 
     /**
@@ -47,21 +36,31 @@ class authorityController extends Controller
      * @param  \App\Models\Cecy\Modelo1  $modelo1
      * @return \Illuminate\Http\Response
      */
-    public function show(Modelo1 $modelo1)
+    public function show()
     {
-        //
+        $res= Authority::with('user')->with('type')
+        ->where('state',true)->get();
+        return $res;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cecy\Modelo1  $modelo1
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Modelo1 $modelo1)
+  
+    public function update(Request $request)
     {
-        //
+        $authority = Authority::find($request->id);
+        // $authority->user_id=$request->user_id;
+        // $authority->type_id=$request->type['id'];
+        // // $authority->status_id=$request->status;
+        // $authority->start_date=$request->start_date;
+        // $authority->end_date=$request->end_date;
+        $authority->state=false;
+        $authority->save();
+        $authorities = new Authority;
+        $authorities->user_id=$request->user['id'];
+        $authorities->type_id=$request->type['id'];
+        $authority->state=true;
+        $authorities->save();
+        $res= Authority::with('user')->with('type')->where('state',true)->get();
+        return $res;
     }
 
     /**
@@ -70,8 +69,15 @@ class authorityController extends Controller
      * @param  \App\Models\Cecy\Modelo1  $modelo1
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Modelo1 $modelo1)
+    public function destroy($id)
     {
-        //
+        $authority = Authority::find($id);
+        $authority->state=false;
+        $authority->save();
+        $res= Authority::with('user')->with('type')
+        ->where('state',true)->get();
+        return $res;
     }
+
+    
 }

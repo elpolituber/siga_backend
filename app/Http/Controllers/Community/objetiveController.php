@@ -59,39 +59,37 @@ class objetiveController extends Controller
      * @param  \App\Models\Cecy\Modelo1  $modelo1
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Modelo1 $modelo1)
+    public function destroy($id)
     {
-        //
+        
+        Objetive::where('id',$id)->delete();
     }
 
-    public function aimsCreate($id_project,array $objective){
-        $condicion=[
-            ["project_id",$id_project],
-            ["description",$objective["children"]["description"]],
-            
-          ]; 
-          $fkaims=$objective["children"]["description"] <> null ?
-            Objetive::where($condicion)->first()->id: 
-            null;
+    public function aimsCreate($id_project,$objective,
+          $indicator,
+          $means_verification,
+          $description){
+
         $SpecificAim = new Objetive;
-        $SpecificAim->state=true;
         $SpecificAim->project_id=$id_project;
-        $SpecificAim->indicator= $objective["indicator"];
-        $SpecificAim->means_verification=$objective["means_verification"];
-        $SpecificAim->description=$objective["description"];
-        $SpecificAim->type_id=$objective["type"]["id"];
-        $SpecificAim->parent_id=$fkaims;
+        $SpecificAim->indicator= $indicator;
+        $SpecificAim->means_verification=$means_verification;
+        $SpecificAim->description=$description;
+        $SpecificAim->type_id=$objective;
+      //  $SpecificAim->parent_id=$fkaims;
         $SpecificAim->save();
     }
-    public function aimsUpdate($id_project,array $objective,$parent_code_id){
-        $SpecificAim = Objetive::find($objective["id"]);
-        $SpecificAim->state=true;
+    public function aimsUpdate($id_project,array $objective,
+    $indicator,
+    $means_verification,
+    $description,
+    $id){
+        $SpecificAim = Objetive::find($id);
         $SpecificAim->project_id=$id_project;
-        $SpecificAim->indicator= $objective["indicator"];
-        $SpecificAim->means_verification=$objective["means_verification"];
-        $SpecificAim->description=$objective["description"];
-        $SpecificAim->type_id=$objective["type"]["id"];
-        $SpecificAim->parent_id=$parent_code_id->id;
+        $SpecificAim->indicator= $indicator;
+        $SpecificAim->means_verification=$means_verification;
+        $SpecificAim->description=$description;
+        $SpecificAim->type_id=$objective["id"];
         $SpecificAim->save();
       }
 }

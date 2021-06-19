@@ -17,9 +17,9 @@ class CreateCommunityVinculacionAuthoritiesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('authentication.users');
             $table->foreignId('type_id')->nullable()->constrained('app.catalogues');
-            $table->foreignId('status_id')->nullable()->constrained('app.catalogues');
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            // $table->foreignId('status_id')->nullable()->constrained('app.catalogues');
+            // $table->date('start_date')->nullable();
+            // $table->date('end_date')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();
         });

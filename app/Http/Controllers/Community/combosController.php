@@ -7,8 +7,8 @@ use App\Models\Community\Project;
 use Illuminate\Http\Request;
 use App\Models\App\Career;
 use App\Models\App\Catalogue;
-
-
+use App\Models\App\Location; 
+use App\Models\Authentication\User;
 
 class combosController extends Controller
 {//objeto se fue
@@ -27,7 +27,7 @@ class combosController extends Controller
         "assignedLine"=>$assignedLine,
         "linkageAxes"=>$linkageAxes,
         "bondingActivities"=>$bondingActivities,
-        "fraquencyOfActivity"=>$fraquencyOfActivity,
+        "fraquency"=>$fraquencyOfActivity,
         "research_areas"=>$researchAreas,
         "objective"=>$aims,
         "teacher_funtion"=>$funtionTeacher,
@@ -79,5 +79,24 @@ public function indice($type){
     return 'funtion_'.+($num);
   }
 }
- 
+  
+  public function index(Request $request)
+    {
+        $locations = Location::with('type')->with('parent')->with(['children' => function ($province) {
+
+            $province->with('type')->with('parent')->with(['children' => function ($canton) {
+
+                $canton->with('type')->with('parent')->with(['children' => function ($parish) {
+                    $parish->with('type')->with('parent')->with('children');
+                }]);
+            }]);
+        }])->get();
+        return  $locations;      
+    }
+
+
+  public function user(){
+    $user=User::get();
+    return $user;
+  }
 }
